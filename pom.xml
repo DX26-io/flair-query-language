@@ -24,7 +24,7 @@
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		
 		<aws-maven.version>5.0.0.RELEASE</aws-maven.version>
-        	<bucket.name>vizcentric-mvn-repo</bucket.name>
+        	<bucket.name>dx26-mvn-repo</bucket.name>
 	</properties>
 	<scm>
 		<connection>
