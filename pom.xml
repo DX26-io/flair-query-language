@@ -22,29 +22,32 @@
 		<maven.surefire.plugin>2.22.1</maven.surefire.plugin>
 		<project.scm.id>github-credentials</project.scm.id>
 		<maven.javadoc.skip>true</maven.javadoc.skip>
+		
+		<aws-maven.version>5.0.0.RELEASE</aws-maven.version>
+        	<bucket.name>vizcentric-mvn-repo</bucket.name>
 	</properties>
 	<scm>
 		<connection>
-            scm:git:https://@github.com/viz-centric/flair-query-language.git
+            scm:git:https://@github.com/DX26-io/flair-query-language.git
         </connection>
-		<url>https://github.com/viz-centric/flair-query-language.git</url>
+		<url>https://github.com/DX26-io/flair-query-language.git</url>
 		<developerConnection>
-            scm:git:https://github.com/viz-centric/flair-query-language.git
+            scm:git:https://github.com/DX26-io/flair-query-language.git
         </developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 	<distributionManagement>
 		<repository>
-			<id>dev-azure-com-vizcentric-flair-query-language</id>
-			<url>https://pkgs.dev.azure.com/VizCentric/_packaging/flair-query-language/maven/v1</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
+		    <id>aws-release</id>
+		    <name>AWS Release Repository</name>
+		    <url>s3://${bucket.name}/release</url>
 		</repository>
-	</distributionManagement>
+		<snapshotRepository>
+		    <id>aws-snapshot</id>
+		    <name>AWS Snapshot Repository</name>
+		    <url>s3://${bucket.name}/snapshot</url>
+		</snapshotRepository>
+    	</distributionManagement>
 	<repositories>
 		<repository>
 			<id>dev-azure-com-vizcentric-flair-query-language</id>
@@ -93,6 +96,13 @@
 		</dependency>
 	</dependencies>
 	<build>
+		<extensions>
+		    <extension>
+			<groupId>org.springframework.build</groupId>
+			<artifactId>aws-maven</artifactId>
+			<version>${aws-maven.version}</version>
+		    </extension>
+        	</extensions>
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
