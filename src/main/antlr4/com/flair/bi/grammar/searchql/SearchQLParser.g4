@@ -22,7 +22,7 @@ aggregation_statements
  ;
 
 aggregation_statement
- : aggregation_function '(' feature ')'
+ : aggregation_function ('(')? (feature)? (')')?
  ;
 
 where_statement
@@ -30,7 +30,7 @@ where_statement
  ;
 
 by_statement
- : K_BY features
+ : K_BY (features)?
  ;
 
 orderby_statement

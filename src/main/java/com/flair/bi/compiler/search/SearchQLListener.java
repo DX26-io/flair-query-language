@@ -4,6 +4,7 @@ import com.flair.bi.grammar.searchql.SearchQLParser;
 import com.flair.bi.grammar.searchql.SearchQLParserBaseListener;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class SearchQLListener extends SearchQLParserBaseListener {
@@ -15,7 +16,7 @@ public class SearchQLListener extends SearchQLParserBaseListener {
         List<AggregationStatementResult> statements = ctx.aggregation_statement()
                 .stream()
                 .map(as -> {
-                    String featureName = as.feature().getText();
+                    String featureName = Optional.ofNullable(as.feature()).map(f -> f.getText()).orElse(null);
                     String aggregationName = as.aggregation_function().getText();
                     return new AggregationStatementResult(aggregationName, featureName);
                 })

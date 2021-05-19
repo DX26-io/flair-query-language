@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class SearchQLCompilerTest {
 
@@ -77,6 +78,42 @@ public class SearchQLCompilerTest {
         assertEquals("count", result.getAggregationStatementsResult().getStatements().get(0).getFunction());
 
         assertEquals("revenue", result.getAggregationStatementsResult().getStatements().get(1).getFeature());
+        assertEquals("max", result.getAggregationStatementsResult().getStatements().get(1).getFunction());
+    }
+
+    @Test
+    public void aggregationStatementQuery_functionOnly() {
+        SearchResult result = match("count");
+        assertEquals(1, result.getAggregationStatementsResult().getStatements().size());
+        assertNull(result.getAggregationStatementsResult().getStatements().get(0).getFeature());
+        assertEquals("count", result.getAggregationStatementsResult().getStatements().get(0).getFunction());
+    }
+
+    @Test
+    public void aggregationStatementQuery_functionOnlyWithOpeningBracket() {
+        SearchResult result = match("count(");
+        assertEquals(1, result.getAggregationStatementsResult().getStatements().size());
+        assertNull(result.getAggregationStatementsResult().getStatements().get(0).getFeature());
+        assertEquals("count", result.getAggregationStatementsResult().getStatements().get(0).getFunction());
+    }
+
+    @Test
+    public void aggregationStatementQuery_functionOnlyWithoutClosingBracket() {
+        SearchResult result = match("count(sales");
+        assertEquals(1, result.getAggregationStatementsResult().getStatements().size());
+        assertEquals("sales", result.getAggregationStatementsResult().getStatements().get(0).getFeature());
+        assertEquals("count", result.getAggregationStatementsResult().getStatements().get(0).getFunction());
+    }
+
+    @Test
+    public void aggregationStatementQuery_functionOnlyWithOpeningBracketAndTwoStatements() {
+        SearchResult result = match("count(sales), max(");
+        assertEquals(2, result.getAggregationStatementsResult().getStatements().size());
+
+        assertEquals("sales", result.getAggregationStatementsResult().getStatements().get(0).getFeature());
+        assertEquals("count", result.getAggregationStatementsResult().getStatements().get(0).getFunction());
+
+        assertNull(result.getAggregationStatementsResult().getStatements().get(1).getFeature());
         assertEquals("max", result.getAggregationStatementsResult().getStatements().get(1).getFunction());
     }
 
