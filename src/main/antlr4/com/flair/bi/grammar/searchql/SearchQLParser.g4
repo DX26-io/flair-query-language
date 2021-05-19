@@ -22,19 +22,19 @@ aggregation_statements
  ;
 
 aggregation_statement
- : aggregation_function '(' feature ')'
+ : aggregation_function ('(')? (feature)? (')')?
  ;
 
 where_statement
- : K_FILTER K_BY conditions
+ : K_FILTER K_BY (conditions)?
  ;
 
 by_statement
- : K_BY features
+ : K_BY (features)?
  ;
 
 orderby_statement
- : K_ORDER_BY feature order_direction
+ : K_ORDER_BY (feature)? (order_direction)?
  ;
 
 order_direction
@@ -46,11 +46,11 @@ comparison
  ;
 
 condition_in
- : feature '(' any_name ( ',' any_name)* ')'
+ : feature ('(')? (any_name)? ( ',' any_name)* (')')?
  ;
 
 condition_compare
- : feature comparison any_name
+ : feature (comparison)? (any_name)?
  ;
 
 condition
@@ -59,11 +59,11 @@ condition
  ;
 
 conditions
- : condition ( ',' condition )*
+ : condition ( ',' (condition)? )*
  ;
 
 features
- : feature ( ',' feature )*
+ : feature ( ',' (feature)? )*
  ;
 
 any_name:
