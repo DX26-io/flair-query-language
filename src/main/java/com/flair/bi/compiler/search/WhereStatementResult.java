@@ -2,7 +2,7 @@ package com.flair.bi.compiler.search;
 
 import java.util.List;
 
-public class WhereStatementResult {
+public class WhereStatementResult implements IStatementResult {
     private final List<WhereConditionResult> conditions;
 
     public WhereStatementResult(List<WhereConditionResult> conditions) {
@@ -11,5 +11,12 @@ public class WhereStatementResult {
 
     public List<WhereConditionResult> getConditions() {
         return conditions;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "conditions=" + conditions +
+                '}';
     }
 }

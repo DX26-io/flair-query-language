@@ -18,298 +18,252 @@ public class SearchQLCompilerTest {
     @Test
     public void fullSearchQuery() {
         SearchResult result = match("count(sales), max(revenue) by state, street filter by country('USA', 'CAN'), quantity_purchased >= 10000 order by some_feature desc");
-        assertEquals("sales", result.getAggregationStatementsResult().getStatements().get(0).getFeature());
-        assertEquals("count", result.getAggregationStatementsResult().getStatements().get(0).getFunction());
+        assertEquals("sales", result.asAggregationStatementsResult().get().getStatements().get(0).getFeature());
+        assertEquals("count", result.asAggregationStatementsResult().get().getStatements().get(0).getFunction());
 
-        assertEquals("revenue", result.getAggregationStatementsResult().getStatements().get(1).getFeature());
-        assertEquals("max", result.getAggregationStatementsResult().getStatements().get(1).getFunction());
+        assertEquals("revenue", result.asAggregationStatementsResult().get().getStatements().get(1).getFeature());
+        assertEquals("max", result.asAggregationStatementsResult().get().getStatements().get(1).getFunction());
 
-        assertEquals("state", result.getByStatementResult().getFeature().get(0));
-        assertEquals("street", result.getByStatementResult().getFeature().get(1));
+        assertEquals("state", result.asByStatementResult().get().getFeature().get(0));
+        assertEquals("street", result.asByStatementResult().get().getFeature().get(1));
 
-        assertEquals("'USA','CAN'", result.getWhereStatementResult().getConditions().get(0).getStatement());
-        assertEquals("country", result.getWhereStatementResult().getConditions().get(0).getFeature());
+        assertEquals("'USA','CAN'", result.asWhereStatementResult().get().getConditions().get(0).getStatement());
+        assertEquals("country", result.asWhereStatementResult().get().getConditions().get(0).getFeature());
 
-        assertEquals("quantity_purchased", result.getWhereStatementResult().getConditions().get(1).getFeature());
-        assertEquals(">=", result.getWhereStatementResult().getConditions().get(1).getCondition());
-        assertEquals("10000", result.getWhereStatementResult().getConditions().get(1).getStatement());
+        assertEquals("quantity_purchased", result.asWhereStatementResult().get().getConditions().get(1).getFeature());
+        assertEquals(">=", result.asWhereStatementResult().get().getConditions().get(1).getCondition());
+        assertEquals("10000", result.asWhereStatementResult().get().getConditions().get(1).getStatement());
 
-        assertEquals("some_feature", result.getOrderByStatementResult().getFeature());
-        assertEquals("desc", result.getOrderByStatementResult().getDirection());
+        assertEquals("some_feature", result.asOrderByStatementResult().get().getFeature());
+        assertEquals("desc", result.asOrderByStatementResult().get().getDirection());
     }
 
     @Test
     public void fullSearchQuery_orderByOnly() {
         SearchResult result = match("count(sales), max(revenue) by state, street filter by country('USA', 'CAN'), quantity_purchased >= 10000 order by");
-        assertEquals("sales", result.getAggregationStatementsResult().getStatements().get(0).getFeature());
-        assertEquals("count", result.getAggregationStatementsResult().getStatements().get(0).getFunction());
+        assertEquals("sales", result.asAggregationStatementsResult().get().getStatements().get(0).getFeature());
+        assertEquals("count", result.asAggregationStatementsResult().get().getStatements().get(0).getFunction());
 
-        assertEquals("revenue", result.getAggregationStatementsResult().getStatements().get(1).getFeature());
-        assertEquals("max", result.getAggregationStatementsResult().getStatements().get(1).getFunction());
+        assertEquals("revenue", result.asAggregationStatementsResult().get().getStatements().get(1).getFeature());
+        assertEquals("max", result.asAggregationStatementsResult().get().getStatements().get(1).getFunction());
 
-        assertEquals("state", result.getByStatementResult().getFeature().get(0));
-        assertEquals("street", result.getByStatementResult().getFeature().get(1));
+        assertEquals("state", result.asByStatementResult().get().getFeature().get(0));
+        assertEquals("street", result.asByStatementResult().get().getFeature().get(1));
 
-        assertEquals("'USA','CAN'", result.getWhereStatementResult().getConditions().get(0).getStatement());
-        assertEquals("country", result.getWhereStatementResult().getConditions().get(0).getFeature());
+        assertEquals("'USA','CAN'", result.asWhereStatementResult().get().getConditions().get(0).getStatement());
+        assertEquals("country", result.asWhereStatementResult().get().getConditions().get(0).getFeature());
 
-        assertEquals("quantity_purchased", result.getWhereStatementResult().getConditions().get(1).getFeature());
-        assertEquals(">=", result.getWhereStatementResult().getConditions().get(1).getCondition());
-        assertEquals("10000", result.getWhereStatementResult().getConditions().get(1).getStatement());
+        assertEquals("quantity_purchased", result.asWhereStatementResult().get().getConditions().get(1).getFeature());
+        assertEquals(">=", result.asWhereStatementResult().get().getConditions().get(1).getCondition());
+        assertEquals("10000", result.asWhereStatementResult().get().getConditions().get(1).getStatement());
 
-        assertNull(result.getOrderByStatementResult().getFeature());
-        assertNull(result.getOrderByStatementResult().getDirection());
+        assertNull(result.asOrderByStatementResult().get().getFeature());
+        assertNull(result.asOrderByStatementResult().get().getDirection());
     }
 
     @Test
     public void fullSearchQuery_orderByColumnOnly() {
         SearchResult result = match("count(sales), max(revenue) by state, street filter by country('USA', 'CAN'), quantity_purchased >= 10000 order by column");
-        assertEquals("sales", result.getAggregationStatementsResult().getStatements().get(0).getFeature());
-        assertEquals("count", result.getAggregationStatementsResult().getStatements().get(0).getFunction());
+        assertEquals("sales", result.asAggregationStatementsResult().get().getStatements().get(0).getFeature());
+        assertEquals("count", result.asAggregationStatementsResult().get().getStatements().get(0).getFunction());
 
-        assertEquals("revenue", result.getAggregationStatementsResult().getStatements().get(1).getFeature());
-        assertEquals("max", result.getAggregationStatementsResult().getStatements().get(1).getFunction());
+        assertEquals("revenue", result.asAggregationStatementsResult().get().getStatements().get(1).getFeature());
+        assertEquals("max", result.asAggregationStatementsResult().get().getStatements().get(1).getFunction());
 
-        assertEquals("state", result.getByStatementResult().getFeature().get(0));
-        assertEquals("street", result.getByStatementResult().getFeature().get(1));
+        assertEquals("state", result.asByStatementResult().get().getFeature().get(0));
+        assertEquals("street", result.asByStatementResult().get().getFeature().get(1));
 
-        assertEquals("'USA','CAN'", result.getWhereStatementResult().getConditions().get(0).getStatement());
-        assertEquals("country", result.getWhereStatementResult().getConditions().get(0).getFeature());
+        assertEquals("'USA','CAN'", result.asWhereStatementResult().get().getConditions().get(0).getStatement());
+        assertEquals("country", result.asWhereStatementResult().get().getConditions().get(0).getFeature());
 
-        assertEquals("quantity_purchased", result.getWhereStatementResult().getConditions().get(1).getFeature());
-        assertEquals(">=", result.getWhereStatementResult().getConditions().get(1).getCondition());
-        assertEquals("10000", result.getWhereStatementResult().getConditions().get(1).getStatement());
+        assertEquals("quantity_purchased", result.asWhereStatementResult().get().getConditions().get(1).getFeature());
+        assertEquals(">=", result.asWhereStatementResult().get().getConditions().get(1).getCondition());
+        assertEquals("10000", result.asWhereStatementResult().get().getConditions().get(1).getStatement());
 
-        assertEquals("column", result.getOrderByStatementResult().getFeature());
-        assertNull(result.getOrderByStatementResult().getDirection());
+        assertEquals("column", result.asOrderByStatementResult().get().getFeature());
+        assertNull(result.asOrderByStatementResult().get().getDirection());
     }
 
     @Test
     public void aggregationStatementAndByStatementAndWhereStatement() {
         SearchResult result = match("count(sales), max(revenue) by state, street filter by country('USA', 'CAN'), quantity_purchased >= 10000");
-        assertEquals("sales", result.getAggregationStatementsResult().getStatements().get(0).getFeature());
-        assertEquals("count", result.getAggregationStatementsResult().getStatements().get(0).getFunction());
+        assertEquals("sales", result.asAggregationStatementsResult().get().getStatements().get(0).getFeature());
+        assertEquals("count", result.asAggregationStatementsResult().get().getStatements().get(0).getFunction());
 
-        assertEquals("revenue", result.getAggregationStatementsResult().getStatements().get(1).getFeature());
-        assertEquals("max", result.getAggregationStatementsResult().getStatements().get(1).getFunction());
+        assertEquals("revenue", result.asAggregationStatementsResult().get().getStatements().get(1).getFeature());
+        assertEquals("max", result.asAggregationStatementsResult().get().getStatements().get(1).getFunction());
 
-        assertEquals("state", result.getByStatementResult().getFeature().get(0));
-        assertEquals("street", result.getByStatementResult().getFeature().get(1));
+        assertEquals("state", result.asByStatementResult().get().getFeature().get(0));
+        assertEquals("street", result.asByStatementResult().get().getFeature().get(1));
 
-        assertEquals("'USA','CAN'", result.getWhereStatementResult().getConditions().get(0).getStatement());
-        assertEquals("country", result.getWhereStatementResult().getConditions().get(0).getFeature());
+        assertEquals("'USA','CAN'", result.asWhereStatementResult().get().getConditions().get(0).getStatement());
+        assertEquals("country", result.asWhereStatementResult().get().getConditions().get(0).getFeature());
 
-        assertEquals("quantity_purchased", result.getWhereStatementResult().getConditions().get(1).getFeature());
-        assertEquals(">=", result.getWhereStatementResult().getConditions().get(1).getCondition());
-        assertEquals("10000", result.getWhereStatementResult().getConditions().get(1).getStatement());
+        assertEquals("quantity_purchased", result.asWhereStatementResult().get().getConditions().get(1).getFeature());
+        assertEquals(">=", result.asWhereStatementResult().get().getConditions().get(1).getCondition());
+        assertEquals("10000", result.asWhereStatementResult().get().getConditions().get(1).getStatement());
     }
 
     @Test
     public void aggregationStatementAndByStatementAndWhereStatement_onlyBy() {
         SearchResult result = match("count(sales), max(revenue) by state, street filter by");
-        assertEquals("sales", result.getAggregationStatementsResult().getStatements().get(0).getFeature());
-        assertEquals("count", result.getAggregationStatementsResult().getStatements().get(0).getFunction());
+        assertEquals("sales", result.asAggregationStatementsResult().get().getStatements().get(0).getFeature());
+        assertEquals("count", result.asAggregationStatementsResult().get().getStatements().get(0).getFunction());
 
-        assertEquals("revenue", result.getAggregationStatementsResult().getStatements().get(1).getFeature());
-        assertEquals("max", result.getAggregationStatementsResult().getStatements().get(1).getFunction());
+        assertEquals("revenue", result.asAggregationStatementsResult().get().getStatements().get(1).getFeature());
+        assertEquals("max", result.asAggregationStatementsResult().get().getStatements().get(1).getFunction());
 
-        assertEquals("state", result.getByStatementResult().getFeature().get(0));
-        assertEquals("street", result.getByStatementResult().getFeature().get(1));
+        assertEquals("state", result.asByStatementResult().get().getFeature().get(0));
+        assertEquals("street", result.asByStatementResult().get().getFeature().get(1));
 
-        assertEquals(0, result.getWhereStatementResult().getConditions().size());
+        assertEquals(0, result.asWhereStatementResult().get().getConditions().size());
     }
 
     @Test
     public void aggregationStatementAndByStatementAndWhereStatement_onlyByFeature() {
         SearchResult result = match("count(sales), max(revenue) by state, street filter by country");
-        assertEquals("sales", result.getAggregationStatementsResult().getStatements().get(0).getFeature());
-        assertEquals("count", result.getAggregationStatementsResult().getStatements().get(0).getFunction());
+        assertEquals("sales", result.asAggregationStatementsResult().get().getStatements().get(0).getFeature());
+        assertEquals("count", result.asAggregationStatementsResult().get().getStatements().get(0).getFunction());
 
-        assertEquals("revenue", result.getAggregationStatementsResult().getStatements().get(1).getFeature());
-        assertEquals("max", result.getAggregationStatementsResult().getStatements().get(1).getFunction());
+        assertEquals("revenue", result.asAggregationStatementsResult().get().getStatements().get(1).getFeature());
+        assertEquals("max", result.asAggregationStatementsResult().get().getStatements().get(1).getFunction());
 
-        assertEquals("state", result.getByStatementResult().getFeature().get(0));
-        assertEquals("street", result.getByStatementResult().getFeature().get(1));
+        assertEquals("state", result.asByStatementResult().get().getFeature().get(0));
+        assertEquals("street", result.asByStatementResult().get().getFeature().get(1));
 
-        assertEquals(1, result.getWhereStatementResult().getConditions().size());
-        assertEquals("country", result.getWhereStatementResult().getConditions().get(0).getFeature());
+        assertEquals(1, result.asWhereStatementResult().get().getConditions().size());
+        assertEquals("country", result.asWhereStatementResult().get().getConditions().get(0).getFeature());
     }
 
     @Test
     public void aggregationStatementAndByStatementAndWhereStatement_onlyByFeatureBrace() {
         SearchResult result = match("count(sales), max(revenue) by state, street filter by country(");
-        assertEquals("sales", result.getAggregationStatementsResult().getStatements().get(0).getFeature());
-        assertEquals("count", result.getAggregationStatementsResult().getStatements().get(0).getFunction());
+        assertEquals("sales", result.asAggregationStatementsResult().get().getStatements().get(0).getFeature());
+        assertEquals("count", result.asAggregationStatementsResult().get().getStatements().get(0).getFunction());
 
-        assertEquals("revenue", result.getAggregationStatementsResult().getStatements().get(1).getFeature());
-        assertEquals("max", result.getAggregationStatementsResult().getStatements().get(1).getFunction());
+        assertEquals("revenue", result.asAggregationStatementsResult().get().getStatements().get(1).getFeature());
+        assertEquals("max", result.asAggregationStatementsResult().get().getStatements().get(1).getFunction());
 
-        assertEquals("state", result.getByStatementResult().getFeature().get(0));
-        assertEquals("street", result.getByStatementResult().getFeature().get(1));
+        assertEquals("state", result.asByStatementResult().get().getFeature().get(0));
+        assertEquals("street", result.asByStatementResult().get().getFeature().get(1));
 
-        assertEquals(1, result.getWhereStatementResult().getConditions().size());
-        assertEquals("country", result.getWhereStatementResult().getConditions().get(0).getFeature());
+        assertEquals(1, result.asWhereStatementResult().get().getConditions().size());
+        assertEquals("country", result.asWhereStatementResult().get().getConditions().get(0).getFeature());
     }
 
     @Test
     public void aggregationStatementAndByStatementAndWhereStatement_onlyByFeatureBraceConditionIn() {
         SearchResult result = match("count(sales), max(revenue) by state, street filter by country('USA',");
-        assertEquals("sales", result.getAggregationStatementsResult().getStatements().get(0).getFeature());
-        assertEquals("count", result.getAggregationStatementsResult().getStatements().get(0).getFunction());
+        assertEquals("sales", result.asAggregationStatementsResult().get().getStatements().get(0).getFeature());
+        assertEquals("count", result.asAggregationStatementsResult().get().getStatements().get(0).getFunction());
 
-        assertEquals("revenue", result.getAggregationStatementsResult().getStatements().get(1).getFeature());
-        assertEquals("max", result.getAggregationStatementsResult().getStatements().get(1).getFunction());
+        assertEquals("revenue", result.asAggregationStatementsResult().get().getStatements().get(1).getFeature());
+        assertEquals("max", result.asAggregationStatementsResult().get().getStatements().get(1).getFunction());
 
-        assertEquals("state", result.getByStatementResult().getFeature().get(0));
-        assertEquals("street", result.getByStatementResult().getFeature().get(1));
+        assertEquals("state", result.asByStatementResult().get().getFeature().get(0));
+        assertEquals("street", result.asByStatementResult().get().getFeature().get(1));
 
-        assertEquals(1, result.getWhereStatementResult().getConditions().size());
-        assertEquals("country", result.getWhereStatementResult().getConditions().get(0).getFeature());
-        assertEquals("'USA'", result.getWhereStatementResult().getConditions().get(0).getStatement());
+        assertEquals(1, result.asWhereStatementResult().get().getConditions().size());
+        assertEquals("country", result.asWhereStatementResult().get().getConditions().get(0).getFeature());
+        assertEquals("'USA'", result.asWhereStatementResult().get().getConditions().get(0).getStatement());
     }
 
     @Test
     public void aggregationStatementAndByStatementAndWhereStatement_onlyByFeatureBraceConditionInAndComma() {
         SearchResult result = match("count(sales), max(revenue) by state, street filter by country('USA'),");
-        assertEquals("sales", result.getAggregationStatementsResult().getStatements().get(0).getFeature());
-        assertEquals("count", result.getAggregationStatementsResult().getStatements().get(0).getFunction());
+        assertEquals("sales", result.asAggregationStatementsResult().get().getStatements().get(0).getFeature());
+        assertEquals("count", result.asAggregationStatementsResult().get().getStatements().get(0).getFunction());
 
-        assertEquals("revenue", result.getAggregationStatementsResult().getStatements().get(1).getFeature());
-        assertEquals("max", result.getAggregationStatementsResult().getStatements().get(1).getFunction());
+        assertEquals("revenue", result.asAggregationStatementsResult().get().getStatements().get(1).getFeature());
+        assertEquals("max", result.asAggregationStatementsResult().get().getStatements().get(1).getFunction());
 
-        assertEquals("state", result.getByStatementResult().getFeature().get(0));
-        assertEquals("street", result.getByStatementResult().getFeature().get(1));
+        assertEquals("state", result.asByStatementResult().get().getFeature().get(0));
+        assertEquals("street", result.asByStatementResult().get().getFeature().get(1));
 
-        assertEquals(1, result.getWhereStatementResult().getConditions().size());
-        assertEquals("country", result.getWhereStatementResult().getConditions().get(0).getFeature());
-        assertEquals("'USA'", result.getWhereStatementResult().getConditions().get(0).getStatement());
+        assertEquals(1, result.asWhereStatementResult().get().getConditions().size());
+        assertEquals("country", result.asWhereStatementResult().get().getConditions().get(0).getFeature());
+        assertEquals("'USA'", result.asWhereStatementResult().get().getConditions().get(0).getStatement());
     }
 
     @Test
     public void aggregationStatementAndByStatementAndWhereStatement_onlyByFeatureBraceConditionInAndConditionCompare() {
         SearchResult result = match("count(sales), max(revenue) by state, street filter by country('USA'), quantity");
-        assertEquals("sales", result.getAggregationStatementsResult().getStatements().get(0).getFeature());
-        assertEquals("count", result.getAggregationStatementsResult().getStatements().get(0).getFunction());
+        assertEquals("sales", result.asAggregationStatementsResult().get().getStatements().get(0).getFeature());
+        assertEquals("count", result.asAggregationStatementsResult().get().getStatements().get(0).getFunction());
 
-        assertEquals("revenue", result.getAggregationStatementsResult().getStatements().get(1).getFeature());
-        assertEquals("max", result.getAggregationStatementsResult().getStatements().get(1).getFunction());
+        assertEquals("revenue", result.asAggregationStatementsResult().get().getStatements().get(1).getFeature());
+        assertEquals("max", result.asAggregationStatementsResult().get().getStatements().get(1).getFunction());
 
-        assertEquals("state", result.getByStatementResult().getFeature().get(0));
-        assertEquals("street", result.getByStatementResult().getFeature().get(1));
+        assertEquals("state", result.asByStatementResult().get().getFeature().get(0));
+        assertEquals("street", result.asByStatementResult().get().getFeature().get(1));
 
-        assertEquals(2, result.getWhereStatementResult().getConditions().size());
-        assertEquals("country", result.getWhereStatementResult().getConditions().get(0).getFeature());
-        assertEquals("'USA'", result.getWhereStatementResult().getConditions().get(0).getStatement());
+        assertEquals(2, result.asWhereStatementResult().get().getConditions().size());
+        assertEquals("country", result.asWhereStatementResult().get().getConditions().get(0).getFeature());
+        assertEquals("'USA'", result.asWhereStatementResult().get().getConditions().get(0).getStatement());
 
-        assertEquals("quantity", result.getWhereStatementResult().getConditions().get(1).getFeature());
-        assertNull(result.getWhereStatementResult().getConditions().get(1).getStatement());
-        assertNull(result.getWhereStatementResult().getConditions().get(1).getCondition());
+        assertEquals("quantity", result.asWhereStatementResult().get().getConditions().get(1).getFeature());
+        assertNull(result.asWhereStatementResult().get().getConditions().get(1).getStatement());
+        assertNull(result.asWhereStatementResult().get().getConditions().get(1).getCondition());
     }
 
     @Test
     public void aggregationStatementAndByStatementAndWhereStatement_onlyByFeatureBraceConditionInAndConditionCompareCondition() {
         SearchResult result = match("count(sales), max(revenue) by state, street filter by country('USA'), quantity >=");
-        assertEquals("sales", result.getAggregationStatementsResult().getStatements().get(0).getFeature());
-        assertEquals("count", result.getAggregationStatementsResult().getStatements().get(0).getFunction());
+        assertEquals("sales", result.asAggregationStatementsResult().get().getStatements().get(0).getFeature());
+        assertEquals("count", result.asAggregationStatementsResult().get().getStatements().get(0).getFunction());
 
-        assertEquals("revenue", result.getAggregationStatementsResult().getStatements().get(1).getFeature());
-        assertEquals("max", result.getAggregationStatementsResult().getStatements().get(1).getFunction());
+        assertEquals("revenue", result.asAggregationStatementsResult().get().getStatements().get(1).getFeature());
+        assertEquals("max", result.asAggregationStatementsResult().get().getStatements().get(1).getFunction());
 
-        assertEquals("state", result.getByStatementResult().getFeature().get(0));
-        assertEquals("street", result.getByStatementResult().getFeature().get(1));
+        assertEquals("state", result.asByStatementResult().get().getFeature().get(0));
+        assertEquals("street", result.asByStatementResult().get().getFeature().get(1));
 
-        assertEquals(2, result.getWhereStatementResult().getConditions().size());
-        assertEquals("country", result.getWhereStatementResult().getConditions().get(0).getFeature());
-        assertEquals("'USA'", result.getWhereStatementResult().getConditions().get(0).getStatement());
+        assertEquals(2, result.asWhereStatementResult().get().getConditions().size());
+        assertEquals("country", result.asWhereStatementResult().get().getConditions().get(0).getFeature());
+        assertEquals("'USA'", result.asWhereStatementResult().get().getConditions().get(0).getStatement());
 
-        assertEquals("quantity", result.getWhereStatementResult().getConditions().get(1).getFeature());
-        assertNull(result.getWhereStatementResult().getConditions().get(1).getStatement());
-        assertEquals(">=", result.getWhereStatementResult().getConditions().get(1).getCondition());
+        assertEquals("quantity", result.asWhereStatementResult().get().getConditions().get(1).getFeature());
+        assertNull(result.asWhereStatementResult().get().getConditions().get(1).getStatement());
+        assertEquals(">=", result.asWhereStatementResult().get().getConditions().get(1).getCondition());
     }
 
     @Test
     public void aggregationStatementAndByStatement() {
         SearchResult result = match("count(sales), max(revenue) by state, street");
-        assertEquals("sales", result.getAggregationStatementsResult().getStatements().get(0).getFeature());
-        assertEquals("count", result.getAggregationStatementsResult().getStatements().get(0).getFunction());
+        assertEquals("sales", result.asAggregationStatementsResult().get().getStatements().get(0).getFeature());
+        assertEquals("count", result.asAggregationStatementsResult().get().getStatements().get(0).getFunction());
 
-        assertEquals("revenue", result.getAggregationStatementsResult().getStatements().get(1).getFeature());
-        assertEquals("max", result.getAggregationStatementsResult().getStatements().get(1).getFunction());
+        assertEquals("revenue", result.asAggregationStatementsResult().get().getStatements().get(1).getFeature());
+        assertEquals("max", result.asAggregationStatementsResult().get().getStatements().get(1).getFunction());
 
-        assertEquals("state", result.getByStatementResult().getFeature().get(0));
-        assertEquals("street", result.getByStatementResult().getFeature().get(1));
+        assertEquals("state", result.asByStatementResult().get().getFeature().get(0));
+        assertEquals("street", result.asByStatementResult().get().getFeature().get(1));
     }
 
     @Test
     public void aggregationStatementAndByStatement_byOnly() {
         SearchResult result = match("count(sales), max(revenue) by");
-        assertEquals("sales", result.getAggregationStatementsResult().getStatements().get(0).getFeature());
-        assertEquals("count", result.getAggregationStatementsResult().getStatements().get(0).getFunction());
+        assertEquals("sales", result.asAggregationStatementsResult().get().getStatements().get(0).getFeature());
+        assertEquals("count", result.asAggregationStatementsResult().get().getStatements().get(0).getFunction());
 
-        assertEquals("revenue", result.getAggregationStatementsResult().getStatements().get(1).getFeature());
-        assertEquals("max", result.getAggregationStatementsResult().getStatements().get(1).getFunction());
+        assertEquals("revenue", result.asAggregationStatementsResult().get().getStatements().get(1).getFeature());
+        assertEquals("max", result.asAggregationStatementsResult().get().getStatements().get(1).getFunction());
 
-        assertEquals(0, result.getByStatementResult().getFeature().size());
+        assertEquals(0, result.asByStatementResult().get().getFeature().size());
     }
 
     @Test
     public void aggregationStatementAndByStatement_byComma() {
         SearchResult result = match("count(sales), max(revenue) by state, country,");
-        assertEquals("sales", result.getAggregationStatementsResult().getStatements().get(0).getFeature());
-        assertEquals("count", result.getAggregationStatementsResult().getStatements().get(0).getFunction());
+        assertEquals("sales", result.asAggregationStatementsResult().get().getStatements().get(0).getFeature());
+        assertEquals("count", result.asAggregationStatementsResult().get().getStatements().get(0).getFunction());
 
-        assertEquals("revenue", result.getAggregationStatementsResult().getStatements().get(1).getFeature());
-        assertEquals("max", result.getAggregationStatementsResult().getStatements().get(1).getFunction());
+        assertEquals("revenue", result.asAggregationStatementsResult().get().getStatements().get(1).getFeature());
+        assertEquals("max", result.asAggregationStatementsResult().get().getStatements().get(1).getFunction());
 
-        assertEquals(2, result.getByStatementResult().getFeature().size());
-        assertEquals("state", result.getByStatementResult().getFeature().get(0));
-        assertEquals("country", result.getByStatementResult().getFeature().get(1));
-    }
-
-    @Test
-    public void aggregationStatementQuery() {
-        SearchResult result = match("count(sales), max(revenue)");
-        assertEquals("sales", result.getAggregationStatementsResult().getStatements().get(0).getFeature());
-        assertEquals("count", result.getAggregationStatementsResult().getStatements().get(0).getFunction());
-
-        assertEquals("revenue", result.getAggregationStatementsResult().getStatements().get(1).getFeature());
-        assertEquals("max", result.getAggregationStatementsResult().getStatements().get(1).getFunction());
-    }
-
-    @Test
-    public void aggregationStatementQuery_functionOnly() {
-        SearchResult result = match("count");
-        assertEquals(1, result.getAggregationStatementsResult().getStatements().size());
-        assertNull(result.getAggregationStatementsResult().getStatements().get(0).getFeature());
-        assertEquals("count", result.getAggregationStatementsResult().getStatements().get(0).getFunction());
-    }
-
-    @Test
-    public void aggregationStatementQuery_functionOnlyWithOpeningBracket() {
-        SearchResult result = match("count(");
-        assertEquals(1, result.getAggregationStatementsResult().getStatements().size());
-        assertNull(result.getAggregationStatementsResult().getStatements().get(0).getFeature());
-        assertEquals("count", result.getAggregationStatementsResult().getStatements().get(0).getFunction());
-    }
-
-    @Test
-    public void aggregationStatementQuery_functionOnlyWithoutClosingBracket() {
-        SearchResult result = match("count(sales");
-        assertEquals(1, result.getAggregationStatementsResult().getStatements().size());
-        assertEquals("sales", result.getAggregationStatementsResult().getStatements().get(0).getFeature());
-        assertEquals("count", result.getAggregationStatementsResult().getStatements().get(0).getFunction());
-    }
-
-    @Test
-    public void aggregationStatementQuery_functionOnlyWithOpeningBracketAndTwoStatements() {
-        SearchResult result = match("count(sales), max(");
-        assertEquals(2, result.getAggregationStatementsResult().getStatements().size());
-
-        assertEquals("sales", result.getAggregationStatementsResult().getStatements().get(0).getFeature());
-        assertEquals("count", result.getAggregationStatementsResult().getStatements().get(0).getFunction());
-
-        assertNull(result.getAggregationStatementsResult().getStatements().get(1).getFeature());
-        assertEquals("max", result.getAggregationStatementsResult().getStatements().get(1).getFunction());
+        assertEquals(2, result.asByStatementResult().get().getFeature().size());
+        assertEquals("state", result.asByStatementResult().get().getFeature().get(0));
+        assertEquals("country", result.asByStatementResult().get().getFeature().get(1));
     }
 
     private SearchResult match(String statement) {

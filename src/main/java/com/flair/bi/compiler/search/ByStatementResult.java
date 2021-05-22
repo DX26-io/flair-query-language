@@ -2,7 +2,7 @@ package com.flair.bi.compiler.search;
 
 import java.util.List;
 
-public class ByStatementResult {
+public class ByStatementResult implements IStatementResult {
 
     private final List<String> feature;
 
@@ -12,5 +12,12 @@ public class ByStatementResult {
 
     public List<String> getFeature() {
         return feature;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "feature=" + feature +
+                '}';
     }
 }

@@ -1,41 +1,53 @@
 package com.flair.bi.compiler.search;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 public class SearchResult {
 
-    private AggregationStatementsResult aggregationStatementsResult;
-    private ByStatementResult byStatementResult;
-    private WhereStatementResult whereStatementResult;
-    private OrderByStatementResult orderByStatementResult;
+    private final List<IStatementResult> results = new ArrayList<>();
 
-    public AggregationStatementsResult getAggregationStatementsResult() {
-        return aggregationStatementsResult;
+    public List<IStatementResult> getResults() {
+        return results;
     }
 
-    public void setAggregationStatementsResult(AggregationStatementsResult aggregationStatementsResult) {
-        this.aggregationStatementsResult = aggregationStatementsResult;
+    public void addResult(IStatementResult result) {
+        results.add(result);
     }
 
-    public ByStatementResult getByStatementResult() {
-        return byStatementResult;
+    public Optional<AggregationStatementsResult> asAggregationStatementsResult() {
+        if (results.size() >= 1) {
+            return Optional.ofNullable((AggregationStatementsResult) results.get(0));
+        }
+        return Optional.empty();
     }
 
-    public void setByStatementResult(ByStatementResult byStatementResult) {
-        this.byStatementResult = byStatementResult;
+    public Optional<ByStatementResult> asByStatementResult() {
+        if (results.size() >= 2) {
+            return Optional.ofNullable((ByStatementResult) results.get(1));
+        }
+        return Optional.empty();
     }
 
-    public WhereStatementResult getWhereStatementResult() {
-        return whereStatementResult;
+    public Optional<WhereStatementResult> asWhereStatementResult() {
+        if (results.size() >= 3) {
+            return Optional.ofNullable((WhereStatementResult) results.get(2));
+        }
+        return Optional.empty();
     }
 
-    public void setWhereStatementResult(WhereStatementResult whereStatementResult) {
-        this.whereStatementResult = whereStatementResult;
+    public Optional<OrderByStatementResult> asOrderByStatementResult() {
+        if (results.size() >= 4) {
+            return Optional.ofNullable((OrderByStatementResult) results.get(3));
+        }
+        return Optional.empty();
     }
 
-    public OrderByStatementResult getOrderByStatementResult() {
-        return orderByStatementResult;
-    }
-
-    public void setOrderByStatementResult(OrderByStatementResult orderByStatementResult) {
-        this.orderByStatementResult = orderByStatementResult;
+    @Override
+    public String toString() {
+        return "{" +
+                "results=" + results +
+                '}';
     }
 }

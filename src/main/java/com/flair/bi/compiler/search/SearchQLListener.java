@@ -2,6 +2,7 @@ package com.flair.bi.compiler.search;
 
 import com.flair.bi.grammar.searchql.SearchQLParser;
 import com.flair.bi.grammar.searchql.SearchQLParserBaseListener;
+import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,36 +15,60 @@ public class SearchQLListener extends SearchQLParserBaseListener {
 
     @Override
     public void enterAggregation_statements(SearchQLParser.Aggregation_statementsContext ctx) {
-        List<AggregationStatementResult> statements = ctx.aggregation_statement()
+        List<TerminalNode> comma = ctx.COMMA();
+        List<SearchQLParser.Aggregation_statementContext> aggregation_statementContexts = ctx.aggregation_statement();
+
+        List<AggregationStatementResult> statements = aggregation_statementContexts
                 .stream()
                 .map(as -> {
+                    TerminalNode openPar = as.OPEN_PAR();
+                    TerminalNode closePar = as.CLOSE_PAR();
+                    AggregationStatementResult.State state;
+                    if (openPar == null) {
+                        state = AggregationStatementResult.State.FUNCTION;
+                    } else if (closePar == null) {
+                        state = AggregationStatementResult.State.FEATURE;
+                    } else {
+                        state = AggregationStatementResult.State.COMPLETED;
+                    }
                     String featureName = Optional.ofNullable(as.feature()).map(f -> f.getText()).orElse(null);
                     String aggregationName = as.aggregation_function().getText();
-                    return new AggregationStatementResult(aggregationName, featureName);
+                    return new AggregationStatementResult(aggregationName, featureName, state);
                 })
                 .collect(Collectors.toList());
-        AggregationStatementsResult aggregationStatement = new AggregationStatementsResult(statements);
-        searchResult.setAggregationStatementsResult(aggregationStatement);
+
+        AggregationStatementsResult.State state = AggregationStatementsResult.State.EXPRESSION;
+        if (comma.size() != aggregation_statementContexts.size()) {
+            if (!statements.isEmpty()) {
+                AggregationStatementResult last = statements.get(statements.size() - 1);
+                AggregationStatementResult.State lastState = last.getState();
+                if (lastState == AggregationStatementResult.State.COMPLETED) {
+                    state = AggregationStatementsResult.State.COMPLETED;
+                }
+            }
+        }
+
+        searchResult.addResult(new AggregationStatementsResult(statements, state));
     }
 
     @Override
     public void exitBy_statement(SearchQLParser.By_statementContext ctx) {
         if (ctx.features() == null) {
-            ByStatementResult byStatementResult = new ByStatementResult(new ArrayList<>());
-            searchResult.setByStatementResult(byStatementResult);
+            searchResult.addResult(new ByStatementResult(new ArrayList<>()));
             return;
         }
         List<String> features = ctx.features().feature()
                 .stream()
                 .map(f -> f.getText())
                 .collect(Collectors.toList());
-        searchResult.setByStatementResult(new ByStatementResult(features));
+
+        searchResult.addResult(new ByStatementResult(features));
     }
 
     @Override
     public void exitWhere_statement(SearchQLParser.Where_statementContext ctx) {
         if (ctx.conditions() == null) {
-            searchResult.setWhereStatementResult(new WhereStatementResult(new ArrayList<>()));
+            searchResult.addResult(new WhereStatementResult(new ArrayList<>()));
             return;
         }
 
@@ -69,14 +94,14 @@ public class SearchQLListener extends SearchQLParserBaseListener {
                     }
                 })
                 .collect(Collectors.toList());
-        searchResult.setWhereStatementResult(new WhereStatementResult(whereConditions));
+        searchResult.addResult(new WhereStatementResult(whereConditions));
     }
 
     @Override
     public void exitOrderby_statement(SearchQLParser.Orderby_statementContext ctx) {
         String featureName = Optional.ofNullable(ctx.feature()).map(co -> co.getText()).orElse(null);
         String orderDirection = Optional.ofNullable(ctx.order_direction()).map(co -> co.getText()).orElse(null);
-        searchResult.setOrderByStatementResult(new OrderByStatementResult(featureName, orderDirection));
+        searchResult.addResult(new OrderByStatementResult(featureName, orderDirection));
     }
 
     public SearchResult getResult() {

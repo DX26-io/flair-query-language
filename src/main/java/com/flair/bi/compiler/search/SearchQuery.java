@@ -12,4 +12,10 @@ public class SearchQuery {
         return statement;
     }
 
+    @Override
+    public String toString() {
+        return "{" +
+                "statement='" + statement + '\'' +
+                '}';
+    }
 }
