@@ -1,6 +1,7 @@
 package com.flair.bi.compiler.search;
 
 import java.util.List;
+import java.util.Optional;
 
 public class AggregationStatementsResult implements IStatementResult {
     private final List<AggregationStatementResult> statements;
@@ -15,11 +16,11 @@ public class AggregationStatementsResult implements IStatementResult {
         return statements;
     }
 
-    public AggregationStatementResult lastStatement() {
+    public Optional<AggregationStatementResult> lastStatement() {
         if (statements.isEmpty()) {
-            return null;
+            return Optional.empty();
         }
-        return statements.get(statements.size() - 1);
+        return Optional.ofNullable(statements.get(statements.size() - 1));
     }
 
     public State getState() {

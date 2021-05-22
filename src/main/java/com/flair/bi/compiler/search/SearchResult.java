@@ -2,6 +2,7 @@ package com.flair.bi.compiler.search;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class SearchResult {
 
@@ -15,32 +16,32 @@ public class SearchResult {
         results.add(result);
     }
 
-    public AggregationStatementsResult asAggregationStatementsResult() {
+    public Optional<AggregationStatementsResult> asAggregationStatementsResult() {
         if (results.size() >= 1) {
-            return (AggregationStatementsResult) results.get(0);
+            return Optional.ofNullable((AggregationStatementsResult) results.get(0));
         }
-        return null;
+        return Optional.empty();
     }
 
-    public ByStatementResult asByStatementResult() {
+    public Optional<ByStatementResult> asByStatementResult() {
         if (results.size() >= 2) {
-            return (ByStatementResult) results.get(1);
+            return Optional.ofNullable((ByStatementResult) results.get(1));
         }
-        return null;
+        return Optional.empty();
     }
 
-    public WhereStatementResult asWhereStatementResult() {
+    public Optional<WhereStatementResult> asWhereStatementResult() {
         if (results.size() >= 3) {
-            return (WhereStatementResult) results.get(2);
+            return Optional.ofNullable((WhereStatementResult) results.get(2));
         }
-        return null;
+        return Optional.empty();
     }
 
-    public OrderByStatementResult asOrderByStatementResult() {
+    public Optional<OrderByStatementResult> asOrderByStatementResult() {
         if (results.size() >= 4) {
-            return (OrderByStatementResult) results.get(3);
+            return Optional.ofNullable((OrderByStatementResult) results.get(3));
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override
