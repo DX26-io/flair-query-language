@@ -5,43 +5,7 @@ import java.util.List;
 
 public class SearchResult {
 
-    private AggregationStatementsResult aggregationStatementsResult;
-    private ByStatementResult byStatementResult;
-    private WhereStatementResult whereStatementResult;
-    private OrderByStatementResult orderByStatementResult;
     private final List<IStatementResult> results = new ArrayList<>();
-
-    public AggregationStatementsResult getAggregationStatementsResult() {
-        return aggregationStatementsResult;
-    }
-
-    public void setAggregationStatementsResult(AggregationStatementsResult aggregationStatementsResult) {
-        this.aggregationStatementsResult = aggregationStatementsResult;
-    }
-
-    public ByStatementResult getByStatementResult() {
-        return byStatementResult;
-    }
-
-    public void setByStatementResult(ByStatementResult byStatementResult) {
-        this.byStatementResult = byStatementResult;
-    }
-
-    public WhereStatementResult getWhereStatementResult() {
-        return whereStatementResult;
-    }
-
-    public void setWhereStatementResult(WhereStatementResult whereStatementResult) {
-        this.whereStatementResult = whereStatementResult;
-    }
-
-    public OrderByStatementResult getOrderByStatementResult() {
-        return orderByStatementResult;
-    }
-
-    public void setOrderByStatementResult(OrderByStatementResult orderByStatementResult) {
-        this.orderByStatementResult = orderByStatementResult;
-    }
 
     public List<IStatementResult> getResults() {
         return results;
@@ -50,4 +14,33 @@ public class SearchResult {
     public void addResult(IStatementResult result) {
         results.add(result);
     }
+
+    public AggregationStatementsResult asAggregationStatementsResult() {
+        if (results.size() >= 1) {
+            return (AggregationStatementsResult) results.get(0);
+        }
+        return null;
+    }
+
+    public ByStatementResult asByStatementResult() {
+        if (results.size() >= 2) {
+            return (ByStatementResult) results.get(1);
+        }
+        return null;
+    }
+
+    public WhereStatementResult asWhereStatementResult() {
+        if (results.size() >= 3) {
+            return (WhereStatementResult) results.get(2);
+        }
+        return null;
+    }
+
+    public OrderByStatementResult asOrderByStatementResult() {
+        if (results.size() >= 4) {
+            return (OrderByStatementResult) results.get(3);
+        }
+        return null;
+    }
+
 }

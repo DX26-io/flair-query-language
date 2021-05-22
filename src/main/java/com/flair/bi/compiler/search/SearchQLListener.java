@@ -48,16 +48,13 @@ public class SearchQLListener extends SearchQLParserBaseListener {
             }
         }
 
-        AggregationStatementsResult aggregationStatement = new AggregationStatementsResult(statements, state);
-        searchResult.setAggregationStatementsResult(aggregationStatement);
-        searchResult.addResult(aggregationStatement);
+        searchResult.addResult(new AggregationStatementsResult(statements, state));
     }
 
     @Override
     public void exitBy_statement(SearchQLParser.By_statementContext ctx) {
         if (ctx.features() == null) {
-            ByStatementResult byStatementResult = new ByStatementResult(new ArrayList<>());
-            searchResult.setByStatementResult(byStatementResult);
+            searchResult.addResult(new ByStatementResult(new ArrayList<>()));
             return;
         }
         List<String> features = ctx.features().feature()
@@ -65,15 +62,13 @@ public class SearchQLListener extends SearchQLParserBaseListener {
                 .map(f -> f.getText())
                 .collect(Collectors.toList());
 
-        ByStatementResult result = new ByStatementResult(features);
-        searchResult.setByStatementResult(result);
-        searchResult.addResult(result);
+        searchResult.addResult(new ByStatementResult(features));
     }
 
     @Override
     public void exitWhere_statement(SearchQLParser.Where_statementContext ctx) {
         if (ctx.conditions() == null) {
-            searchResult.setWhereStatementResult(new WhereStatementResult(new ArrayList<>()));
+            searchResult.addResult(new WhereStatementResult(new ArrayList<>()));
             return;
         }
 
@@ -99,18 +94,14 @@ public class SearchQLListener extends SearchQLParserBaseListener {
                     }
                 })
                 .collect(Collectors.toList());
-        WhereStatementResult result = new WhereStatementResult(whereConditions);
-        searchResult.setWhereStatementResult(result);
-        searchResult.addResult(result);
+        searchResult.addResult(new WhereStatementResult(whereConditions));
     }
 
     @Override
     public void exitOrderby_statement(SearchQLParser.Orderby_statementContext ctx) {
         String featureName = Optional.ofNullable(ctx.feature()).map(co -> co.getText()).orElse(null);
         String orderDirection = Optional.ofNullable(ctx.order_direction()).map(co -> co.getText()).orElse(null);
-        OrderByStatementResult result = new OrderByStatementResult(featureName, orderDirection);
-        searchResult.setOrderByStatementResult(result);
-        searchResult.addResult(result);
+        searchResult.addResult(new OrderByStatementResult(featureName, orderDirection));
     }
 
     public SearchResult getResult() {
