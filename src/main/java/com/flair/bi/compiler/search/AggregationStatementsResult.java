@@ -15,6 +15,13 @@ public class AggregationStatementsResult implements IStatementResult {
         return statements;
     }
 
+    public AggregationStatementResult lastStatement() {
+        if (statements.isEmpty()) {
+            return null;
+        }
+        return statements.get(statements.size() - 1);
+    }
+
     public State getState() {
         return state;
     }
