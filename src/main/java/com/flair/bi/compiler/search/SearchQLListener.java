@@ -50,6 +50,7 @@ public class SearchQLListener extends SearchQLParserBaseListener {
 
         AggregationStatementsResult aggregationStatement = new AggregationStatementsResult(statements, state);
         searchResult.setAggregationStatementsResult(aggregationStatement);
+        searchResult.addResult(aggregationStatement);
     }
 
     @Override
@@ -63,7 +64,10 @@ public class SearchQLListener extends SearchQLParserBaseListener {
                 .stream()
                 .map(f -> f.getText())
                 .collect(Collectors.toList());
-        searchResult.setByStatementResult(new ByStatementResult(features));
+
+        ByStatementResult result = new ByStatementResult(features);
+        searchResult.setByStatementResult(result);
+        searchResult.addResult(result);
     }
 
     @Override
@@ -95,14 +99,18 @@ public class SearchQLListener extends SearchQLParserBaseListener {
                     }
                 })
                 .collect(Collectors.toList());
-        searchResult.setWhereStatementResult(new WhereStatementResult(whereConditions));
+        WhereStatementResult result = new WhereStatementResult(whereConditions);
+        searchResult.setWhereStatementResult(result);
+        searchResult.addResult(result);
     }
 
     @Override
     public void exitOrderby_statement(SearchQLParser.Orderby_statementContext ctx) {
         String featureName = Optional.ofNullable(ctx.feature()).map(co -> co.getText()).orElse(null);
         String orderDirection = Optional.ofNullable(ctx.order_direction()).map(co -> co.getText()).orElse(null);
-        searchResult.setOrderByStatementResult(new OrderByStatementResult(featureName, orderDirection));
+        OrderByStatementResult result = new OrderByStatementResult(featureName, orderDirection);
+        searchResult.setOrderByStatementResult(result);
+        searchResult.addResult(result);
     }
 
     public SearchResult getResult() {

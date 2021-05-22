@@ -1,11 +1,15 @@
 package com.flair.bi.compiler.search;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SearchResult {
 
     private AggregationStatementsResult aggregationStatementsResult;
     private ByStatementResult byStatementResult;
     private WhereStatementResult whereStatementResult;
     private OrderByStatementResult orderByStatementResult;
+    private final List<IStatementResult> results = new ArrayList<>();
 
     public AggregationStatementsResult getAggregationStatementsResult() {
         return aggregationStatementsResult;
@@ -37,5 +41,13 @@ public class SearchResult {
 
     public void setOrderByStatementResult(OrderByStatementResult orderByStatementResult) {
         this.orderByStatementResult = orderByStatementResult;
+    }
+
+    public List<IStatementResult> getResults() {
+        return results;
+    }
+
+    public void addResult(IStatementResult result) {
+        results.add(result);
     }
 }

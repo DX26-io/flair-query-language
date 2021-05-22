@@ -2,7 +2,7 @@ package com.flair.bi.compiler.search;
 
 import java.util.List;
 
-public class AggregationStatementsResult {
+public class AggregationStatementsResult implements IStatementResult {
     private final List<AggregationStatementResult> statements;
     private final State state;
 
