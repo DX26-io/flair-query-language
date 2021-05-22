@@ -13,4 +13,11 @@ public class ByStatementResult implements IStatementResult {
     public List<String> getFeature() {
         return feature;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "feature=" + feature +
+                '}';
+    }
 }

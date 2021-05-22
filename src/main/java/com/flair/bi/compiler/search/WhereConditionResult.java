@@ -22,4 +22,13 @@ public class WhereConditionResult {
     public String getCondition() {
         return condition;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "feature='" + feature + '\'' +
+                ", condition='" + condition + '\'' +
+                ", statement='" + statement + '\'' +
+                '}';
+    }
 }

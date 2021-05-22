@@ -17,4 +17,12 @@ public class OrderByStatementResult implements IStatementResult {
     public String getDirection() {
         return direction;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "feature='" + feature + '\'' +
+                ", direction='" + direction + '\'' +
+                '}';
+    }
 }

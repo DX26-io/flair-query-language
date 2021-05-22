@@ -12,4 +12,11 @@ public class WhereStatementResult implements IStatementResult {
     public List<WhereConditionResult> getConditions() {
         return conditions;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "conditions=" + conditions +
+                '}';
+    }
 }

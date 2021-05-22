@@ -22,4 +22,12 @@ public class AggregationStatementsResult implements IStatementResult {
     public enum State {
         EXPRESSION, COMPLETED
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "statements=" + statements +
+                ", state=" + state +
+                '}';
+    }
 }

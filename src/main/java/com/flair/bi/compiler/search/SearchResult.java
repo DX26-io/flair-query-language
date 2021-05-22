@@ -43,4 +43,10 @@ public class SearchResult {
         return null;
     }
 
+    @Override
+    public String toString() {
+        return "{" +
+                "results=" + results +
+                '}';
+    }
 }

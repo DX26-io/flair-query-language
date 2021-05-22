@@ -26,4 +26,13 @@ public class AggregationStatementResult {
     public enum State {
         FUNCTION, FEATURE, COMPLETED
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "function='" + function + '\'' +
+                ", feature='" + feature + '\'' +
+                ", state=" + state +
+                '}';
+    }
 }
