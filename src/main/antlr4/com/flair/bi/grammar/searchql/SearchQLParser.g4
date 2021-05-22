@@ -14,7 +14,7 @@ error
  ;
 
 statement
- : aggregation_statements (by_statement)? (where_statement)? (orderby_statement)?
+ : aggregation_statements by_statement? where_statement? orderby_statement?
  ;
 
 aggregation_statements
@@ -30,7 +30,7 @@ where_statement
  ;
 
 by_statement
- : K_BY (features)?
+ : K_BY features?
  ;
 
 orderby_statement
@@ -46,11 +46,11 @@ comparison
  ;
 
 condition_in
- : feature ('(')? (any_name)? ( ',' any_name)* (')')?
+ : feature OPEN_PAR? any_name? (COMMA any_name)* CLOSE_PAR?
  ;
 
 condition_compare
- : feature (comparison)? (any_name)?
+ : feature comparison? any_name?
  ;
 
 condition
@@ -59,18 +59,18 @@ condition
  ;
 
 conditions
- : condition ( ',' (condition)? )*
+ : condition ( COMMA condition? )*
  ;
 
 features
- : feature ( ',' (feature)? )*
+ : feature ( COMMA feature? )*
  ;
 
 any_name:
   IDENTIFIER
  | STRING_LITERAL
  | NUMERIC_LITERAL
- | '(' any_name ')'
+ | OPEN_PAR any_name CLOSE_PAR
  ;
 
 date_range
