@@ -266,52 +266,6 @@ public class SearchQLCompilerTest {
         assertEquals("country", result.getByStatementResult().getFeature().get(1));
     }
 
-    @Test
-    public void aggregationStatementQuery() {
-        SearchResult result = match("count(sales), max(revenue)");
-        assertEquals("sales", result.getAggregationStatementsResult().getStatements().get(0).getFeature());
-        assertEquals("count", result.getAggregationStatementsResult().getStatements().get(0).getFunction());
-
-        assertEquals("revenue", result.getAggregationStatementsResult().getStatements().get(1).getFeature());
-        assertEquals("max", result.getAggregationStatementsResult().getStatements().get(1).getFunction());
-    }
-
-    @Test
-    public void aggregationStatementQuery_functionOnly() {
-        SearchResult result = match("count");
-        assertEquals(1, result.getAggregationStatementsResult().getStatements().size());
-        assertNull(result.getAggregationStatementsResult().getStatements().get(0).getFeature());
-        assertEquals("count", result.getAggregationStatementsResult().getStatements().get(0).getFunction());
-    }
-
-    @Test
-    public void aggregationStatementQuery_functionOnlyWithOpeningBracket() {
-        SearchResult result = match("count(");
-        assertEquals(1, result.getAggregationStatementsResult().getStatements().size());
-        assertNull(result.getAggregationStatementsResult().getStatements().get(0).getFeature());
-        assertEquals("count", result.getAggregationStatementsResult().getStatements().get(0).getFunction());
-    }
-
-    @Test
-    public void aggregationStatementQuery_functionOnlyWithoutClosingBracket() {
-        SearchResult result = match("count(sales");
-        assertEquals(1, result.getAggregationStatementsResult().getStatements().size());
-        assertEquals("sales", result.getAggregationStatementsResult().getStatements().get(0).getFeature());
-        assertEquals("count", result.getAggregationStatementsResult().getStatements().get(0).getFunction());
-    }
-
-    @Test
-    public void aggregationStatementQuery_functionOnlyWithOpeningBracketAndTwoStatements() {
-        SearchResult result = match("count(sales), max(");
-        assertEquals(2, result.getAggregationStatementsResult().getStatements().size());
-
-        assertEquals("sales", result.getAggregationStatementsResult().getStatements().get(0).getFeature());
-        assertEquals("count", result.getAggregationStatementsResult().getStatements().get(0).getFunction());
-
-        assertNull(result.getAggregationStatementsResult().getStatements().get(1).getFeature());
-        assertEquals("max", result.getAggregationStatementsResult().getStatements().get(1).getFunction());
-    }
-
     private SearchResult match(String statement) {
         return compiler.compile(new SearchQuery(statement));
     }

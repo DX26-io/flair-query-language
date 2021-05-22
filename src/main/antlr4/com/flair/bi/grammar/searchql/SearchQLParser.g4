@@ -18,11 +18,11 @@ statement
  ;
 
 aggregation_statements
- : aggregation_statement (',' aggregation_statement)*
+ : aggregation_statement (COMMA aggregation_statement?)*
  ;
 
 aggregation_statement
- : aggregation_function ('(')? (feature)? (')')?
+ : aggregation_function OPEN_PAR? feature? CLOSE_PAR?
  ;
 
 where_statement
