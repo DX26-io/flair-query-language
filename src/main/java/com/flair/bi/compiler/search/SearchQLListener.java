@@ -54,15 +54,23 @@ public class SearchQLListener extends SearchQLParserBaseListener {
     @Override
     public void exitBy_statement(SearchQLParser.By_statementContext ctx) {
         if (ctx.features() == null) {
-            searchResult.addResult(new ByStatementResult(new ArrayList<>()));
+            searchResult.addResult(new ByStatementResult(new ArrayList<>(), ByStatementResult.State.EXPRESSION));
             return;
         }
-        List<String> features = ctx.features().feature()
+        List<TerminalNode> comma = ctx.features().COMMA();
+        List<SearchQLParser.FeatureContext> featureList = ctx.features().feature();
+
+        List<String> features = featureList
                 .stream()
                 .map(f -> f.getText())
                 .collect(Collectors.toList());
 
-        searchResult.addResult(new ByStatementResult(features));
+        ByStatementResult.State state = ByStatementResult.State.EXPRESSION;
+        if (comma.size() != featureList.size()) {
+            state = ByStatementResult.State.COMPLETED;
+        }
+
+        searchResult.addResult(new ByStatementResult(features, state));
     }
 
     @Override

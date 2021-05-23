@@ -19,6 +19,8 @@ public class SearchQLCompilerByStatementTest {
         SearchResult result = match("count(sales), max(revenue) by state, street");
 
         assertEquals(2, result.asByStatementResult().get().getFeature().size());
+        assertEquals(ByStatementResult.State.COMPLETED, result.asByStatementResult().get().getState());
+
         assertEquals("state", result.asByStatementResult().get().getFeature().get(0));
         assertEquals("street", result.asByStatementResult().get().getFeature().get(1));
     }
@@ -28,6 +30,8 @@ public class SearchQLCompilerByStatementTest {
         SearchResult result = match("count(sales), max(revenue) by state, ");
 
         assertEquals(1, result.asByStatementResult().get().getFeature().size());
+        assertEquals(ByStatementResult.State.EXPRESSION, result.asByStatementResult().get().getState());
+
         assertEquals("state", result.asByStatementResult().get().getFeature().get(0));
     }
 
@@ -36,6 +40,8 @@ public class SearchQLCompilerByStatementTest {
         SearchResult result = match("count(sales), max(revenue) by state");
 
         assertEquals(1, result.asByStatementResult().get().getFeature().size());
+        assertEquals(ByStatementResult.State.COMPLETED, result.asByStatementResult().get().getState());
+
         assertEquals("state", result.asByStatementResult().get().getFeature().get(0));
     }
 
@@ -44,6 +50,7 @@ public class SearchQLCompilerByStatementTest {
         SearchResult result = match("count(sales), max(revenue) by");
 
         assertEquals(0, result.asByStatementResult().get().getFeature().size());
+        assertEquals(ByStatementResult.State.EXPRESSION, result.asByStatementResult().get().getState());
     }
 
     @Test
@@ -51,6 +58,8 @@ public class SearchQLCompilerByStatementTest {
         SearchResult result = match("count(sales), max(revenue) by state, country,");
 
         assertEquals(2, result.asByStatementResult().get().getFeature().size());
+        assertEquals(ByStatementResult.State.EXPRESSION, result.asByStatementResult().get().getState());
+
         assertEquals("state", result.asByStatementResult().get().getFeature().get(0));
         assertEquals("country", result.asByStatementResult().get().getFeature().get(1));
     }

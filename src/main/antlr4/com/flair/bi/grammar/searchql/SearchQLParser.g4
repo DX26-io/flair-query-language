@@ -34,7 +34,7 @@ by_statement
  ;
 
 orderby_statement
- : K_ORDER_BY (feature)? (order_direction)?
+ : K_ORDER_BY feature? order_direction?
  ;
 
 order_direction
