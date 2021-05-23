@@ -26,7 +26,7 @@ aggregation_statement
  ;
 
 where_statement
- : K_FILTER K_BY (conditions)?
+ : FILTER_BY conditions?
  ;
 
 by_statement
