@@ -57,6 +57,7 @@ public class SearchQLListener extends SearchQLParserBaseListener {
             searchResult.addResult(new ByStatementResult(new ArrayList<>(), ByStatementResult.State.EXPRESSION));
             return;
         }
+
         List<TerminalNode> comma = ctx.features().COMMA();
         List<SearchQLParser.FeatureContext> featureList = ctx.features().feature();
 
@@ -66,7 +67,7 @@ public class SearchQLListener extends SearchQLParserBaseListener {
                 .collect(Collectors.toList());
 
         ByStatementResult.State state = ByStatementResult.State.EXPRESSION;
-        if (comma.size() != featureList.size()) {
+        if (comma.size() < featureList.size()) {
             state = ByStatementResult.State.COMPLETED;
         }
 
