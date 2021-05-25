@@ -41,6 +41,15 @@
 			<url>https://maven.pkg.github.com/DX26-io/flair-query-language</url>
 		</repository>
 	</distributionManagement>
+	<repositories>
+		<repository>
+			<id>github</id>
+			<url>https://maven.pkg.github.com/DX26-io/*/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/org.antlr/antlr4 -->
