@@ -36,7 +36,7 @@ K_ORDER_BY
  ;
 
 FILTER_BY
- : K_FILTER K_BY
+ : K_FILTER SPACES K_BY
  ;
 
 IDENTIFIER
@@ -56,7 +56,7 @@ STRING_LITERAL
  ;
 
 SPACES
- : [ \u000B\t\r\n] -> channel(HIDDEN)
+ : [ \u000B\t\r\n]
  ;
 
 UNEXPECTED_CHAR : .;

@@ -4,11 +4,13 @@ public class WhereConditionResult {
     private final String feature;
     private final String condition;
     private final String statement;
+    private final State state;
 
-    public WhereConditionResult(String feature, String condition, String statement) {
+    public WhereConditionResult(String feature, String condition, String statement, State state) {
         this.feature = feature;
         this.condition = condition;
         this.statement = statement;
+        this.state = state;
     }
 
     public String getFeature() {
@@ -30,5 +32,13 @@ public class WhereConditionResult {
                 ", condition='" + condition + '\'' +
                 ", statement='" + statement + '\'' +
                 '}';
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public enum State {
+        FEATURE, STATEMENT, CONDITION, COMPLETED;
     }
 }
