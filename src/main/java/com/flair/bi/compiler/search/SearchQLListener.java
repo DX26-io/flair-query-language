@@ -77,33 +77,68 @@ public class SearchQLListener extends SearchQLParserBaseListener {
     @Override
     public void exitWhere_statement(SearchQLParser.Where_statementContext ctx) {
         if (ctx.conditions() == null) {
-            searchResult.addResult(new WhereStatementResult(new ArrayList<>()));
+            searchResult.addResult(new WhereStatementResult(new ArrayList<>(), WhereStatementResult.State.EXPRESSION));
             return;
         }
 
-        List<WhereConditionResult> whereConditions = ctx.conditions()
-                .condition()
+        List<TerminalNode> comma = ctx.conditions().COMMA();
+        List<SearchQLParser.ConditionContext> conditionsList = ctx.conditions().condition();
+
+        List<WhereConditionResult> whereConditions = conditionsList
                 .stream()
                 .map(c -> {
                     SearchQLParser.Condition_inContext conditionIn = c.condition_in();
                     SearchQLParser.Condition_compareContext conditionCompare = c.condition_compare();
                     if (conditionIn != null) {
+                        TerminalNode openPar = conditionIn.OPEN_PAR();
+                        TerminalNode closePar = conditionIn.CLOSE_PAR();
+                        WhereConditionResult.State state;
+                        if (openPar == null) {
+                            state = WhereConditionResult.State.FEATURE;
+                        } else if (closePar == null) {
+                            state = WhereConditionResult.State.STATEMENT;
+                        } else {
+                            state = WhereConditionResult.State.COMPLETED;
+                        }
                         String featureName = conditionIn.feature().any_name().getText();
                         String statement = conditionIn.any_name().isEmpty() ?
                                 null :
                                 conditionIn.any_name().stream().map(any -> any.getText()).collect(Collectors.joining(","));
-                        return new WhereConditionResult(featureName, null, statement);
+                        return new WhereConditionResult(featureName, null, statement, state);
                     } else if (conditionCompare != null) {
                         String featureName = conditionCompare.feature().getText();
+                        List<TerminalNode> spaces = conditionCompare.SPACES();
                         String comparison = Optional.ofNullable(conditionCompare.comparison()).map(co -> co.getText()).orElse(null);
                         String statement = Optional.ofNullable(conditionCompare.any_name()).map(co -> co.getText()).orElse(null);
-                        return new WhereConditionResult(featureName, comparison, statement);
+                        WhereConditionResult.State state;
+                        if (featureName == null) {
+                            state = WhereConditionResult.State.FEATURE;
+                        } else if (spaces.size() == 1) {
+                            state = WhereConditionResult.State.CONDITION;
+                        } else if (statement == null) {
+                            state = WhereConditionResult.State.STATEMENT;
+                        } else {
+                            state = WhereConditionResult.State.COMPLETED;
+                        }
+                        return new WhereConditionResult(featureName, comparison, statement, state);
                     } else {
                         throw new IllegalStateException("Unknown condition " + c);
                     }
                 })
                 .collect(Collectors.toList());
-        searchResult.addResult(new WhereStatementResult(whereConditions));
+
+        WhereStatementResult.State state = WhereStatementResult.State.EXPRESSION;
+        if (comma.size() != conditionsList.size()) {
+            if (!whereConditions.isEmpty()) {
+                WhereConditionResult last = whereConditions.get(whereConditions.size() - 1);
+                WhereConditionResult.State lastState = last.getState();
+                if (lastState == WhereConditionResult.State.COMPLETED) {
+                    state = WhereStatementResult.State.COMPLETED;
+                }
+            }
+        }
+
+        searchResult.addResult(new WhereStatementResult(whereConditions, state));
     }
 
     @Override
