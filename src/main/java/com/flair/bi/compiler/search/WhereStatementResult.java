@@ -1,6 +1,7 @@
 package com.flair.bi.compiler.search;
 
 import java.util.List;
+import java.util.Optional;
 
 public class WhereStatementResult implements IStatementResult {
     private final List<WhereConditionResult> conditions;
@@ -13,6 +14,13 @@ public class WhereStatementResult implements IStatementResult {
 
     public List<WhereConditionResult> getConditions() {
         return conditions;
+    }
+
+    public Optional<WhereConditionResult> lastStatement() {
+        if (conditions.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(conditions.get(conditions.size() - 1));
     }
 
     @Override
