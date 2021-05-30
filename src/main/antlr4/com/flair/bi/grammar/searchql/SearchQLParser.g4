@@ -42,7 +42,7 @@ order_direction
  ;
 
 comparison
- : LT | LT_EQ | GT | GT_EQ | EQ | NOT_EQ1 | NOT_EQ2
+ : LT | LT_EQ | GT | GT_EQ | EQ | NOT_EQ1 | NOT_EQ2 | ASSIGN
  ;
 
 condition_in
