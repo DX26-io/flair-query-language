@@ -145,7 +145,19 @@ public class SearchQLListener extends SearchQLParserBaseListener {
     public void exitOrderby_statement(SearchQLParser.Orderby_statementContext ctx) {
         String featureName = Optional.ofNullable(ctx.feature()).map(co -> co.getText()).orElse(null);
         String orderDirection = Optional.ofNullable(ctx.order_direction()).map(co -> co.getText()).orElse(null);
-        searchResult.addResult(new OrderByStatementResult(featureName, orderDirection));
+
+        OrderByStatementResult.State state;
+        List<TerminalNode> spaces = ctx.SPACES();
+        if (spaces.size() == 0) {
+            state = OrderByStatementResult.State.START;
+        } else if (spaces.size() == 1) {
+            state = OrderByStatementResult.State.FEATURE;
+        } else if (orderDirection == null) {
+            state = OrderByStatementResult.State.DIRECTION;
+        } else {
+            state = OrderByStatementResult.State.COMPLETED;
+        }
+        searchResult.addResult(new OrderByStatementResult(featureName, orderDirection, state));
     }
 
     public SearchResult getResult() {
