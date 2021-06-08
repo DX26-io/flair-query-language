@@ -16,7 +16,7 @@ public class SearchQLCompilerTest {
 
     @Test
     public void fullSearchQuery() {
-        SearchResult result = match("count(sales), max(revenue) by state, street filter by country('USA', 'CAN'), quantity_purchased >= 10000 order by some_feature desc");
+        SearchResult result = match("count(sales), max(revenue) by state, street filter by country('USA','UK','India'), quantity_purchased >= 10000 order by some_feature desc");
         assertEquals("sales", result.asAggregationStatementsResult().get().getStatements().get(0).getFeature());
         assertEquals("count", result.asAggregationStatementsResult().get().getStatements().get(0).getFunction());
 
@@ -26,7 +26,9 @@ public class SearchQLCompilerTest {
         assertEquals("state", result.asByStatementResult().get().getFeature().get(0));
         assertEquals("street", result.asByStatementResult().get().getFeature().get(1));
 
-        assertEquals("'USA','CAN'", result.asWhereStatementResult().get().getConditions().get(0).getStatement());
+        assertEquals("'USA'", result.asWhereStatementResult().get().getConditions().get(0).getStatements().get(0));
+        assertEquals("'UK'", result.asWhereStatementResult().get().getConditions().get(0).getStatements().get(1));
+        assertEquals("'India'", result.asWhereStatementResult().get().getConditions().get(0).getStatements().get(2));
         assertEquals("country", result.asWhereStatementResult().get().getConditions().get(0).getFeature());
 
         assertEquals("quantity_purchased", result.asWhereStatementResult().get().getConditions().get(1).getFeature());

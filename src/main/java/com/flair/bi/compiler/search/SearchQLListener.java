@@ -101,10 +101,8 @@ public class SearchQLListener extends SearchQLParserBaseListener {
                             state = WhereConditionResult.State.COMPLETED;
                         }
                         String featureName = conditionIn.feature().any_name().getText();
-                        String statement = conditionIn.any_name().isEmpty() ?
-                                null :
-                                conditionIn.any_name().stream().map(any -> any.getText()).collect(Collectors.joining(","));
-                        return new WhereConditionResult(featureName, null, statement, state);
+                        List<String> statements = conditionIn.any_name().stream().map(any -> any.getText()).collect(Collectors.toList());
+                        return new WhereConditionResult(featureName, statements, state);
                     } else if (conditionCompare != null) {
                         String featureName = conditionCompare.feature().getText();
                         List<TerminalNode> spaces = conditionCompare.SPACES();
