@@ -48,13 +48,13 @@ public class SearchQLListener extends SearchQLParserBaseListener {
             }
         }
 
-        searchResult.addResult(new AggregationStatementsResult(statements, state));
+        searchResult.setAggregationStatementsResult(new AggregationStatementsResult(statements, state));
     }
 
     @Override
     public void exitBy_statement(SearchQLParser.By_statementContext ctx) {
         if (ctx.features() == null) {
-            searchResult.addResult(new ByStatementResult(new ArrayList<>(), ByStatementResult.State.EXPRESSION));
+            searchResult.setByStatementResult(new ByStatementResult(new ArrayList<>(), ByStatementResult.State.EXPRESSION));
             return;
         }
 
@@ -71,13 +71,13 @@ public class SearchQLListener extends SearchQLParserBaseListener {
             state = ByStatementResult.State.COMPLETED;
         }
 
-        searchResult.addResult(new ByStatementResult(features, state));
+        searchResult.setByStatementResult(new ByStatementResult(features, state));
     }
 
     @Override
     public void exitWhere_statement(SearchQLParser.Where_statementContext ctx) {
         if (ctx.conditions() == null) {
-            searchResult.addResult(new WhereStatementResult(new ArrayList<>(), WhereStatementResult.State.EXPRESSION));
+            searchResult.setWhereStatementResult(new WhereStatementResult(new ArrayList<>(), WhereStatementResult.State.EXPRESSION));
             return;
         }
 
@@ -139,7 +139,7 @@ public class SearchQLListener extends SearchQLParserBaseListener {
             }
         }
 
-        searchResult.addResult(new WhereStatementResult(whereConditions, state));
+        searchResult.setWhereStatementResult(new WhereStatementResult(whereConditions, state));
     }
 
     @Override
@@ -158,7 +158,7 @@ public class SearchQLListener extends SearchQLParserBaseListener {
         } else {
             state = OrderByStatementResult.State.COMPLETED;
         }
-        searchResult.addResult(new OrderByStatementResult(featureName, orderDirection, state));
+        searchResult.setOrderByStatementResult(new OrderByStatementResult(featureName, orderDirection, state));
     }
 
     public SearchResult getResult() {
