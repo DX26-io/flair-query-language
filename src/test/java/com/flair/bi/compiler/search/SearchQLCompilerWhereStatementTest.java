@@ -22,7 +22,8 @@ public class SearchQLCompilerWhereStatementTest {
         assertEquals(2, result.asWhereStatementResult().get().getConditions().size());
         assertEquals(WhereStatementResult.State.COMPLETED, result.asWhereStatementResult().get().getState());
 
-        assertEquals("'USA','CAN'", result.asWhereStatementResult().get().getConditions().get(0).getStatement());
+        assertEquals("'USA'", result.asWhereStatementResult().get().getConditions().get(0).getStatements().get(0));
+        assertEquals("'CAN'", result.asWhereStatementResult().get().getConditions().get(0).getStatements().get(1));
         assertEquals("country", result.asWhereStatementResult().get().getConditions().get(0).getFeature());
         assertEquals(WhereConditionResult.State.COMPLETED, result.asWhereStatementResult().get().getConditions().get(0).getState());
 
@@ -49,7 +50,7 @@ public class SearchQLCompilerWhereStatementTest {
 
         assertEquals("country", result.asWhereStatementResult().get().getConditions().get(0).getFeature());
         assertNull(result.asWhereStatementResult().get().getConditions().get(0).getCondition());
-        assertNull(result.asWhereStatementResult().get().getConditions().get(0).getStatement());
+        assertEquals(0, result.asWhereStatementResult().get().getConditions().get(0).getStatements().size());
         assertEquals(WhereConditionResult.State.FEATURE, result.asWhereStatementResult().get().getConditions().get(0).getState());
     }
 
@@ -62,7 +63,7 @@ public class SearchQLCompilerWhereStatementTest {
 
         assertEquals("country", result.asWhereStatementResult().get().getConditions().get(0).getFeature());
         assertNull(result.asWhereStatementResult().get().getConditions().get(0).getCondition());
-        assertNull(result.asWhereStatementResult().get().getConditions().get(0).getStatement());
+        assertEquals(0, result.asWhereStatementResult().get().getConditions().get(0).getStatements().size());
         assertEquals(WhereConditionResult.State.STATEMENT, result.asWhereStatementResult().get().getConditions().get(0).getState());
     }
 
@@ -74,7 +75,7 @@ public class SearchQLCompilerWhereStatementTest {
         assertEquals(WhereStatementResult.State.EXPRESSION, result.asWhereStatementResult().get().getState());
 
         assertEquals("country", result.asWhereStatementResult().get().getConditions().get(0).getFeature());
-        assertEquals("'USA'", result.asWhereStatementResult().get().getConditions().get(0).getStatement());
+        assertEquals("'USA'", result.asWhereStatementResult().get().getConditions().get(0).getStatements().get(0));
         assertNull(result.asWhereStatementResult().get().getConditions().get(0).getCondition());
         assertEquals(WhereConditionResult.State.STATEMENT, result.asWhereStatementResult().get().getConditions().get(0).getState());
     }
@@ -87,7 +88,7 @@ public class SearchQLCompilerWhereStatementTest {
         assertEquals(WhereStatementResult.State.EXPRESSION, result.asWhereStatementResult().get().getState());
 
         assertEquals("country", result.asWhereStatementResult().get().getConditions().get(0).getFeature());
-        assertEquals("'USA'", result.asWhereStatementResult().get().getConditions().get(0).getStatement());
+        assertEquals("'USA'", result.asWhereStatementResult().get().getConditions().get(0).getStatements().get(0));
         assertNull(result.asWhereStatementResult().get().getConditions().get(0).getCondition());
         assertEquals(WhereConditionResult.State.STATEMENT, result.asWhereStatementResult().get().getConditions().get(0).getState());
     }
@@ -100,7 +101,21 @@ public class SearchQLCompilerWhereStatementTest {
         assertEquals(WhereStatementResult.State.COMPLETED, result.asWhereStatementResult().get().getState());
 
         assertEquals("country", result.asWhereStatementResult().get().getConditions().get(0).getFeature());
-        assertEquals("'USA'", result.asWhereStatementResult().get().getConditions().get(0).getStatement());
+        assertEquals("'USA'", result.asWhereStatementResult().get().getConditions().get(0).getStatements().get(0));
+        assertNull(result.asWhereStatementResult().get().getConditions().get(0).getCondition());
+        assertEquals(WhereConditionResult.State.COMPLETED, result.asWhereStatementResult().get().getConditions().get(0).getState());
+    }
+
+    @Test
+    public void aggregationStatementAndByStatementAndWhereStatement_onlyByFeatureBraceConditionInNoCommaMultiple() {
+        SearchResult result = match("count(sales), max(revenue) by state, street filter by country('USA', 'Hawaii')");
+
+        assertEquals(1, result.asWhereStatementResult().get().getConditions().size());
+        assertEquals(WhereStatementResult.State.COMPLETED, result.asWhereStatementResult().get().getState());
+
+        assertEquals("country", result.asWhereStatementResult().get().getConditions().get(0).getFeature());
+        assertEquals("'USA'", result.asWhereStatementResult().get().getConditions().get(0).getStatements().get(0));
+        assertEquals("'Hawaii'", result.asWhereStatementResult().get().getConditions().get(0).getStatements().get(1));
         assertNull(result.asWhereStatementResult().get().getConditions().get(0).getCondition());
         assertEquals(WhereConditionResult.State.COMPLETED, result.asWhereStatementResult().get().getConditions().get(0).getState());
     }
@@ -113,7 +128,7 @@ public class SearchQLCompilerWhereStatementTest {
         assertEquals(WhereStatementResult.State.EXPRESSION, result.asWhereStatementResult().get().getState());
 
         assertEquals("country", result.asWhereStatementResult().get().getConditions().get(0).getFeature());
-        assertEquals("'USA'", result.asWhereStatementResult().get().getConditions().get(0).getStatement());
+        assertEquals("'USA'", result.asWhereStatementResult().get().getConditions().get(0).getStatements().get(0));
         assertNull(result.asWhereStatementResult().get().getConditions().get(0).getCondition());
         assertEquals(WhereConditionResult.State.COMPLETED, result.asWhereStatementResult().get().getConditions().get(0).getState());
     }
@@ -126,7 +141,7 @@ public class SearchQLCompilerWhereStatementTest {
         assertEquals(WhereStatementResult.State.EXPRESSION, result.asWhereStatementResult().get().getState());
 
         assertEquals("country", result.asWhereStatementResult().get().getConditions().get(0).getFeature());
-        assertEquals("'USA'", result.asWhereStatementResult().get().getConditions().get(0).getStatement());
+        assertEquals("'USA'", result.asWhereStatementResult().get().getConditions().get(0).getStatements().get(0));
         assertNull(result.asWhereStatementResult().get().getConditions().get(0).getCondition());
         assertEquals(WhereConditionResult.State.COMPLETED, result.asWhereStatementResult().get().getConditions().get(0).getState());
 
@@ -144,7 +159,7 @@ public class SearchQLCompilerWhereStatementTest {
         assertEquals(WhereStatementResult.State.EXPRESSION, result.asWhereStatementResult().get().getState());
 
         assertEquals("country", result.asWhereStatementResult().get().getConditions().get(0).getFeature());
-        assertEquals("'USA'", result.asWhereStatementResult().get().getConditions().get(0).getStatement());
+        assertEquals("'USA'", result.asWhereStatementResult().get().getConditions().get(0).getStatements().get(0));
         assertNull(result.asWhereStatementResult().get().getConditions().get(0).getCondition());
         assertEquals(WhereConditionResult.State.COMPLETED, result.asWhereStatementResult().get().getConditions().get(0).getState());
 
@@ -162,7 +177,7 @@ public class SearchQLCompilerWhereStatementTest {
         assertEquals(WhereStatementResult.State.EXPRESSION, result.asWhereStatementResult().get().getState());
 
         assertEquals("country", result.asWhereStatementResult().get().getConditions().get(0).getFeature());
-        assertEquals("'USA'", result.asWhereStatementResult().get().getConditions().get(0).getStatement());
+        assertEquals("'USA'", result.asWhereStatementResult().get().getConditions().get(0).getStatements().get(0));
         assertNull(result.asWhereStatementResult().get().getConditions().get(0).getCondition());
         assertEquals(WhereConditionResult.State.COMPLETED, result.asWhereStatementResult().get().getConditions().get(0).getState());
 
