@@ -89,6 +89,7 @@ public class SearchQLCompilerWhereStatementTest {
 
         assertEquals("country", result.asWhereStatementResult().get().getConditions().get(0).getFeature());
         assertEquals("'USA'", result.asWhereStatementResult().get().getConditions().get(0).getStatements().get(0));
+        assertNull(result.asWhereStatementResult().get().getConditions().get(0).getStatements().get(1));
         assertNull(result.asWhereStatementResult().get().getConditions().get(0).getCondition());
         assertEquals(WhereConditionResult.State.STATEMENT, result.asWhereStatementResult().get().getConditions().get(0).getState());
     }

@@ -102,6 +102,9 @@ public class SearchQLListener extends SearchQLParserBaseListener {
                         }
                         String featureName = conditionIn.feature().any_name().getText();
                         List<String> statements = conditionIn.any_name().stream().map(any -> any.getText()).collect(Collectors.toList());
+                        if (conditionIn.COMMA().size() >= statements.size() && !statements.isEmpty()) {
+                            statements.add(null);
+                        }
                         return new WhereConditionResult(featureName, statements, state);
                     } else if (conditionCompare != null) {
                         String featureName = conditionCompare.feature().getText();
